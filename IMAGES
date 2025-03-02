@@ -1,4 +1,103 @@
-https://1drv.ms/i/c/7ecf385e62f246e1/ERzwM8NdZOlCr5OU11sOjl8Bqak6EFKGKOlWBy38gSXkjw?e=HKTDIx
-https://1drv.ms/i/c/7ecf385e62f246e1/EbzrMcUWONlNtftzQgjcpR0BCxvx68vzkDuom3y58-hTng?e=LOaPwW
-https://1drv.ms/i/c/7ecf385e62f246e1/EY8z_JCcSrVCv-M-AKz0VgwBhSHVWAMqCL91tWkJXI-HnA?e=zZoUta
-https://1drv.ms/i/c/7ecf385e62f246e1/EUf374vjgohHrrWmrqF2_6UBJ8rCqV4n4gXfhrmxUQTVjA?e=O5h4sr
+EXPERIMENT 3
+CIRCUIT 1
+
+AIM: Design and analyze the MOS differential amplifier circuit for the following specifications.
+Vdd=2.5V,P<=3mW,Vicm=1.3V,Vocm=1.4V,Vp=0.5V. Perform DC analysis,transient analysis,and frequency response and extract the required parameters.
+CIRCUIT DIAGRAM: blob:https://web.whatsapp.com/edc05304-6a59-41b4-b193-69281e269229
+THEORY:
+Amplifiers are a basic part of analog circuit design, and MOSFETs serve as excellent amplification devices. Among the various amplifier configurations, the common-source (CS) amplifier is widely used. It is characterized by having the gate as the input, the drain as the output, and the source as the common terminal for AC signals.
+CS Amplifier with a Resistor Load
+CS Amplifier with a Current Source Load
+CS Amplifier with a Resistor Load
+In this configuration, a resistor acts as the load at the drain terminal.
+Large-Signal Operation
+The behavior of the circuit changes as the input voltage (VIN) varies:
+When VIN is near zero, the MOSFET remains off, and the output voltage (VOUT) is at VDD.
+As VIN approaches the threshold voltage (VTH), the MOSFET starts conducting, leading to a small voltage drop across the load resistor (RL), causing VOUT to decrease.
+When VIN exceeds VTH, the MOSFET enters saturation, and the amplifier operates effectively.
+As VIN continues to increase, the MOSFET eventually enters the linear region, causing a further drop in VOUT.
+Since MOSFETs function best as amplifiers in saturation, the effective operating range of the amplifier is limited to values where the transistor remains in saturation.
+PROCEDURE:
+1. Open LTspice, Launch LTspice on your computer.
+2. Create a New Schematic
+ Click on File → New Schematic to open a new schematic window.
+3. Place Components
+Power Supply (V1)
+    Press F2 (Component selector).
+    Search for voltage and place it in the schematic.
+    Right-click on it and set DC Value = 2.5V.
+    Connect it to the top node of the circuit.
+Resistors (R1, R2, R3)
+    Press F2 and select resistor.
+    Place three resistors:
+        R1 and R2 = 1.833kΩ (connected from V1 to the drain of each MOSFET).
+        R3 = 0.4166kΩ (connected from the MOSFET source node to ground).
+    Right-click each resistor to edit values.
+MOSFETs (M1, M2)
+    Press F2, search for NMOS, and place two NMOS transistors.
+    Ensure that the drains are connected to R1 and R2, respectively.
+    Connect the sources of both MOSFETs together and to R3.
+    Ensure the gates are connected to V2 and V3.
+Input DC Sources (V2, V3)
+    Press F2, select voltage, and place two DC voltage sources.
+    Set both sources to 1.3V (Right-click → Set DC value to 1.3V).
+    Connect V2 to the gate of M1 and V3 to the gate of M2.
+4. Connect Ground
+    Press G to place a ground.
+    Connect ground to V2, V3, and the bottom node of R3.
+blob:https://web.whatsapp.com/717a3aec-28f3-4bbb-8078-06ec6648f35c
+5. Simulation Settings
+   Click on Simulate → Edit Simulation Cmd.
+    Go to DC Op Pnt (Operating Point Analysis).
+    Click OK and place the .op statement in the schematic.
+6. Running the Simulation
+    Click the Run button (green play icon).
+    The DC operating points (voltages and currents) will be displayed.
+7. Observing Results
+    Click on different nodes (wires) in the schematic to display voltage values.
+    Click on MOSFETs to see their operating currents.
+CALCULATIONS:
+Length (L = 0.5u)
+Width (W = 50u)
+RD = 1.833kΩ
+Gain = 14.6dB
+1. Differential Pair Operation
+    M1 and M2 (NMOS transistors) form a differential amplifier with a common-source connection.
+    The gates of M1 and M2 receive the same input voltage (1.3V), ensuring balanced operation.
+    The common-source node (bottom connection of M1 and M2) is connected to a current source (R3), setting the total bias current.
+2. Current Mirror Load
+    R1 and R2 (1.833kΩ each) act as load resistors, converting drain currents into output voltages.
+    Because both inputs (V2 and V3) are equal (1.3V), the circuit is symmetric, meaning M1 and M2 share equal current.
+3. Bias Current Analysis
+    The resistor R3 (0.4166kΩ) determines the total tail current, which splits equally between M1 and M2 under ideal conditions.
+    The total tail current ItailItail​ is given by:
+    Itail=VSSR3
+    Itail​=R3​VSS​​ Given V_SS = 2.5V,
+    Itail=2.5V0.4166kΩ≈6mA
+    Itail​=0.4166kΩ2.5V​≈6mA Thus, each transistor ideally conducts:
+    ID=Itail2=3mA
+    ID​=2Itail​​=3mA
+4. Output Voltage Behavior
+    The drain voltages at M1 and M2 are determined by the current flowing through R1 and R2:
+    Vout=VDD−(ID×RD)
+    Vout​=VDD​−(ID​×RD​) Given I_D = 3mA and R1 = 1.833kΩ:
+    Vout=2.5V−(3mA×1.833kΩ)=2.5V−5.5V
+    Vout​=2.5V−(3mA×1.833kΩ)=2.5V−5.5V This indicates MOSFETs may not be in saturation, and adjustments to resistance values or supply voltage may be needed.
+5. Circuit Applications
+    This differential pair is used in amplifiers, comparators, and ADCs.
+    It provides high gain and common-mode rejection.
+    The circuit can be modified for differential gain analysis by applying a small differential input (V2 ≠ V3).
+
+RESULTS:
+DC Operating Point
+blob:https://web.whatsapp.com/6d4229a5-feb5-4887-b5bd-173ed9ca4a8e
+AC analysis
+blob:https://web.whatsapp.com/b60cc1f8-d918-4563-b47f-69eeaac9129a
+Transient analysis
+blob:https://web.whatsapp.com/7ea687d1-9017-4dcb-8e06-a6618db08144
+
+
+INFERENCE:
+*The circuit functions correctly as a differential pair.
+*Current division is as expected based on circuit symmetry.
+*For amplification, an AC input could be applied, and further frequency analysis could be performed.
